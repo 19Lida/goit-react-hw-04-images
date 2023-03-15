@@ -41,24 +41,38 @@ export const App = () => {
   //     }
   //   }
   // }
-  const onSubmitForm = data => {
-    // if (data === this.state.query) {
-    //   return;
-    setQuery(data);
-
-    setImages([]);
-    setPage(1);
+  const fetchImages = async () => {
+    try {
+      setLoading(true);
+      const data = await searchPosts(query, page);
+      if (!query.trim() || !data.hits.length) {
+        // this.setState({ loading: false });
+        return alert(`No image with name ${query}`);
+      }
+      setImages(prev => [...prev, ...data.hits]);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
-  // this.setState({ query: data, images: [], page: 1 });
+  fetchImages();
+}, [query, page];
 
-  const onImageClick = data => {
+const onSubmitForm = data => {
+    setQuery(data);
+setImages([]);
+    setPage(1);
+};
+  
+const onImageClick = data => {
     // this.setState({
     //   largeImageURL: data,
     //   showModal: true,
     // });
     setLargeImgURL(data);
     setShowModal(true);
-  };
+};
+  
   const closeModal = () => {
     // this.setState({
     //   showModal: false,
@@ -66,13 +80,13 @@ export const App = () => {
     // });
     setShowModal(false);
     setLargeImgURL('');
-  };
+};
+  
   const loadMore = () => {
     // this.setState(({ page }) => ({ page: page + 1 }));
     setPage(prevState => prevState + 1);
-  };
-
-  // const { loading, images, largeImageURL, showModal } = this.state;
+};
+  
   return (
     <div className={styles.App}>
       <Searchbar onSubmit={onSubmitForm} />
@@ -88,4 +102,7 @@ export const App = () => {
       )}
     </div>
   );
-};
+      };
+
+
+
