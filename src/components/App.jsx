@@ -18,61 +18,61 @@ export const App = () => {
     if (!query) {
       return;
     }
-  });
 
-  // async componentDidUpdate(prevProps, prevState) {
-  //   const { query, page } = this.state;
-  //   if (prevState.query !== query || prevState.page !== page) {
-  //     try {
-  //       this.setState({ loading: true });
+    // async componentDidUpdate(prevProps, prevState) {
+    //   const { query, page } = this.state;
+    //   if (prevState.query !== query || prevState.page !== page) {
+    //     try {
+    //       this.setState({ loading: true });
 
-  //       const data = await searchPosts(query, page);
-  //       if (!query.trim() || !data.hits.length) {
-  //         this.setState({ loading: false });
-  //         return alert(`No image with name ${query}`);
-  //       }
+    //       const data = await searchPosts(query, page);
+    //       if (!query.trim() || !data.hits.length) {
+    //         this.setState({ loading: false });
+    //         return alert(`No image with name ${query}`);
+    //       }
 
-  //       this.setState({
-  //         images: [...this.state.images, ...data.hits],
-  //       });
-  //     } catch (error) {
-  //     } finally {
-  //       this.setState({ loading: false });
-  //     }
-  //   }
-  // }
-  const fetchImages = async () => {
-    try {
-      setLoading(true);
-      const data = await searchPosts(query, page);
-      if (!query.trim() || !data.hits.length) {
-        // this.setState({ loading: false });
-        return alert(`No image with name ${query}`);
+    //       this.setState({
+    //         images: [...this.state.images, ...data.hits],
+    //       });
+    //     } catch (error) {
+    //     } finally {
+    //       this.setState({ loading: false });
+    //     }
+    //   }
+    // }
+    const fetchImages = async () => {
+      try {
+        setLoading(true);
+        const data = await searchPosts(query, page);
+        if (!query.trim() || !data.hits.length) {
+          // this.setState({ loading: false });
+          setLoading(false);
+          return alert(`No image with name ${query}`);
+        }
+        setImages(prev => [...prev, ...data.hits]);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
       }
-      setImages(prev => [...prev, ...data.hits]);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchImages();
-}, [query, page];
-
-const onSubmitForm = data => {
+    };
+    fetchImages();
+  });
+  const onSubmitForm = data => {
     setQuery(data);
-setImages([]);
+    setImages([]);
     setPage(1);
-};
-  
-const onImageClick = data => {
+  };
+
+  const onImageClick = data => {
     // this.setState({
     //   largeImageURL: data,
     //   showModal: true,
     // });
     setLargeImgURL(data);
     setShowModal(true);
-};
-  
+  };
+
   const closeModal = () => {
     // this.setState({
     //   showModal: false,
@@ -80,13 +80,13 @@ const onImageClick = data => {
     // });
     setShowModal(false);
     setLargeImgURL('');
-};
-  
+  };
+
   const loadMore = () => {
     // this.setState(({ page }) => ({ page: page + 1 }));
     setPage(prevState => prevState + 1);
-};
-  
+  };
+
   return (
     <div className={styles.App}>
       <Searchbar onSubmit={onSubmitForm} />
@@ -97,12 +97,9 @@ const onImageClick = data => {
       {loading && <Loader />}
       {showModal && (
         <Modal close={closeModal}>
-          <img src={largeImageURL} alt="" />
+          <img src={largeImgURL} alt="" />
         </Modal>
       )}
     </div>
   );
-      };
-
-
-
+};
