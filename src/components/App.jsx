@@ -37,6 +37,9 @@ export const App = () => {
     fetch();
   }, [query, page]);
   const onSubmitForm = data => {
+    if (data === query) {
+      return;
+    }
     setQuery(data);
     setImages([]);
     setPage(1);
