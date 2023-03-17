@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './Searchbar.module.css';
 export const Searchbar = ({ onSubmit }) => {
   const [query, setQuery] = useState('');
-  // state = {
-  //   query: '',
-  // };
+
   const handleInput = e => {
     setQuery(e.currentTarget.value.toLowerCase());
   };
@@ -20,9 +18,7 @@ export const Searchbar = ({ onSubmit }) => {
     onSubmit(query);
     setQuery('');
   };
-  // render() {
-  //   // const { handleInput, handleSubmit } = this;
-  //   const { query } = this.state;
+
   return (
     <header className={styles.Searchbar}>
       <form onSubmit={handleSubmit} className={styles.SearchForm}>
